@@ -1,0 +1,4 @@
+name = "Painleve"
+uuid = "b3bc80ac-ac61-11e9-1329-33c34bac5595"
+authors = ["Sheehan Olver <solver@mac.com>"]
+version = "0.1.0"
