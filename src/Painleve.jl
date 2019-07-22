@@ -7,11 +7,11 @@ export painleve2
 function painleve2(s1,s2,s3,x,n)
 	@assert s1 - s2 + s3 + s1*s2*s3 ≈ 0
 
-    Γ = Segment(0, 2.5exp(im*π/6))   ∪
-    Segment(0, 2.5exp(im*π/2))   	 ∪
-    Segment(0, 2.5exp(5im*π/6))  	 ∪
-    Segment(0, 2.5exp(-5im*π/6)) 	 ∪
-    Segment(0, 2.5exp(-im*π/2))  	 ∪
+	Γ = Segment(0, 2.5exp(im*π/6))   ∪
+    Segment(0, 2.5exp(im*π/2))       ∪
+    Segment(0, 2.5exp(5im*π/6))      ∪
+    Segment(0, 2.5exp(-5im*π/6))     ∪
+    Segment(0, 2.5exp(-im*π/2))      ∪
     Segment(0, 2.5exp(-im*π/6));
 
     G = Fun( z -> if angle(z) ≈ π/6
