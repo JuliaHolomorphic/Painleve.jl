@@ -2,3 +2,9 @@ name = "Painleve"
 uuid = "b3bc80ac-ac61-11e9-1329-33c34bac5595"
 authors = ["Sheehan Olver <solver@mac.com>"]
 version = "0.1.0"
+
+[deps]
+ApproxFun = "28f2ccd6-bb30-5033-b560-165f7b14dc2f"
+LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
+SingularIntegralEquations = "e094c991-5a90-5477-8896-c1e4c9552a1a"
+RiemannHilbert = "79305c5b-9889-52e9-bdbd-56f883c71fe0"

@@ -4,8 +4,9 @@ using LinearAlgebra, RiemannHilbert, ApproxFun
 
 export painleve2
 
-function painleve2(s1,s2,s3,x,n)
-	@assert s1 - s2 + s3 + s1*s2*s3 ≈ 0
+function painleve2((s1,s2,s3),x; n=600)
+    @assert mod(n,6) == 0
+	@assert abs(s1 - s2 + s3 + s1*s2*s3) ≤ 100eps()
 
 	Γ = Segment(0, 2.5exp(im*π/6))   ∪
     Segment(0, 2.5exp(im*π/2))       ∪
@@ -36,7 +37,8 @@ function painleve2(s1,s2,s3,x,n)
                     , Γ);
 
     Φ = transpose(rhsolve(transpose(G), n));
-    return Φ
+    z = Fun(ℂ)
+    2(z*Φ[1,2])(Inf)
 end
 
 end # module
