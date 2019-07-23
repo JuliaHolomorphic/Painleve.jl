@@ -2,7 +2,7 @@ module Painleve
 
 using LinearAlgebra, RiemannHilbert, ApproxFun
 
-export painleve2
+export painleve2, painleve2deformed_no_s2
 
 function painleve2((s1,s2,s3),x; n=600)
     @assert mod(n,6) == 0
@@ -31,6 +31,35 @@ function painleve2((s1,s2,s3),x; n=600)
                     [1                             0;
                      -s2*exp(8im/3*z^3+2im*x*z)    1]
                 elseif angle(z) ≈ -5π/6
+                    [1                -s1*exp(-8im/3*z^3-2im*x*z);
+                     0                 1]
+                end
+                    , Γ);
+
+    Φ = transpose(rhsolve(transpose(G), n));
+    z = Fun(ℂ)
+    2(z*Φ[1,2])(Inf)
+end
+
+function painleve2deformed_no_s2((s1,s2,s3),x; n=800)
+    @assert mod(n,4) == 0
+    @assert abs(s1 - s2 + s3 + s1*s2*s3) ≤ 100eps()
+
+    Γ = Segment((im*x^(1/2))/2, 2.5exp(im*π/6)+(im*x^(1/2))/2)   ∪
+        Segment((im*x^(1/2))/2, 2.5exp(im*5π/6)+(im*x^(1/2))/2)      ∪
+        Segment((-im*x^(1/2))/2, 2.5exp(-im*5π/6)-(im*x^(1/2))/2)     ∪
+        Segment((-im*x^(1/2))/2, 2.5exp(-im*π/6)-(im*x^(1/2))/2)
+
+    G = Fun( z -> if angle(z-(im*x^(1/2))/2) ≈ π/6
+                    [1                             0;
+                     s1*exp(8im/3*z^3+2im*x*z)     1]
+                elseif angle(z-(im*x^(1/2))/2) ≈ 5π/6
+                    [1                             0;
+                     s3*exp(8im/3*z^3+2im*x*z)     1]
+                elseif angle(z+(im*x^(1/2))/2) ≈ -π/6
+                    [1                -s3*exp(-8im/3*z^3-2im*x*z);
+                     0                 1]
+                elseif angle(z+(im*x^(1/2))/2) ≈ -5π/6
                     [1                -s1*exp(-8im/3*z^3-2im*x*z);
                      0                 1]
                 end
