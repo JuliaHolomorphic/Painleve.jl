@@ -105,10 +105,11 @@ function pl2def_no_s2_neg_x1((s1,s2,s3),x; n=500)
     2(z*Φ[1,2])(Inf)
 end
 
-function pl2def_no_s2_neg_x2((s1,s2,s3),x; n=45)
+function pl2def_no_s2_neg_x2((s1,s2,s3),x; n=90)
     @assert mod(n,9) == 0
     @assert abs(s1 - s2 + s3 + s1*s2*s3) ≤ 100eps()
     @assert s2 == 0
+    @assert s1*s3 != 1
     @assert x < 0
     
     z_0 = sqrt(-x)/2
@@ -124,6 +125,8 @@ function pl2def_no_s2_neg_x2((s1,s2,s3),x; n=45)
     Γ6  = Segment(z_0, z_0 + 2.5exp(-im*π/4)) 
     Γ = ΓD ∪ Γ1 ∪ ΓLR ∪ ΓLL ∪ Γ3 ∪ Γ4 ∪ ΓUR ∪ ΓUL ∪ Γ6
     
+    Θ(z) = 8/3*z^3+2*x*z
+    
     D(z)  = [1-s1*s3 0; 0 1/(1-s1*s3)]
     S1(z) = [1 0; s1*exp(im*Θ(z)) 1]
     L(z)  = [1 0; s1*exp(im*Θ(z))/(1-s1*s3) 1]
@@ -131,8 +134,6 @@ function pl2def_no_s2_neg_x2((s1,s2,s3),x; n=45)
     S4(z) = [1 -s1*exp(-im*Θ(z)); 0 1]
     U(z)  = [1 -s3*exp(-im*Θ(z))/(1-s1*s3); 0 1]
     S6(z) = [1 -s3*exp(-im*Θ(z)); 0 1]
-    
-    Θ(z) = 8/3*z^3+2*x*z
     
     G = Fun( z -> if z in component(Γ, 1)    D(z)
               elseif z in component(Γ, 2)    S1(z)
