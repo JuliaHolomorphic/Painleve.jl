@@ -70,39 +70,35 @@ function pl2def_no_s2_pos_x((s1,s2,s3),x; n=400)
     2(z*Φ[1,2])(Inf)
 end
 
-function pl2def_no_s2_neg_x1((s1,s2,s3),x; n=50)
+function pl2def_no_s2_neg_x1((s1,s2,s3),x; n=500)
     @assert mod(n,5) == 0
     @assert abs(s1 - s2 + s3 + s1*s2*s3) ≤ 100eps()
-    @assert x<0
     @assert s2 == 0
+    @assert x < 0
     
     z_0 = sqrt(-x)/2
 
-    Γ = Segment(-z_0, z_0)                      ∪
-        Segment(z_0, z_0 + 2.5exp(im*π/4))      ∪
-        Segment(z_0, z_0 + 2.5exp(-im*π/4))     ∪
-        Segment(-z_0, -z_0 + 2.5exp(im*3π/4))   ∪
-        Segment(-z_0, -z_0 + 2.5exp(-im*3π/4))      
+    Γ6Γ1 = Segment(-z_0, z_0)  
+    Γ1   = Segment(z_0, z_0 + 2.5exp(im*π/4))
+    Γ3   = Segment(-z_0, -z_0 + 2.5exp(im*3π/4))
+    Γ4   = Segment(-z_0, -z_0 + 2.5exp(-im*3π/4))
+    Γ6   = Segment(z_0, z_0 + 2.5exp(-im*π/4))  
+    Γ = Γ6Γ1 ∪ Γ1 ∪ Γ3 ∪ Γ4 ∪ Γ6
     
     Θ(z) = 8/3*z^3+2*x*z
     
-    G = Fun( z -> if imag(z) ≈ 0
-                    [1-s1*s3            -s3*exp(-im*Θ(z));
-                     s1*exp(im*Θ(z))    1]
-                elseif angle(z-z_0) ≈ π/4
-                    [1                  0;
-                     s1*exp(im*Θ(z))    1]
-                elseif angle(z-z_0) ≈ -π/4
-                    [1                  -s3*exp(-im*Θ(z));
-                     0                  1]
-                elseif angle(z+z_0) ≈ 3π/4
-                    [1                  0;
-                     s3*exp(im*Θ(z))   1]
-                elseif angle(z+z_0) ≈ -3π/4
-                    [1                  -s1*exp(-im*Θ(z));
-                     0                  1]
-                end
-                    , Γ);
+    S1S6(z) = [1-s1*s3 -s3*exp(-im*Θ(z)); s1*exp(im*Θ(z)) 1]
+    S1(z)   = [1 0; s1*exp(im*Θ(z)) 1]
+    S3(z)   = [1 0; s3*exp(im*Θ(z)) 1]
+    S4(z)   = [1 -s1*exp(-im*Θ(z)); 0 1]
+    S6(z)   = [1 -s3*exp(-im*Θ(z)); 0 1]    
+    
+    G = Fun( z -> if imag(z) ≈ 0             S1S6(z)
+              elseif angle(z-z_0) ≈ π/4      S1(z)
+              elseif angle(z+z_0) ≈ 3π/4     S3(z)
+              elseif angle(z+z_0) ≈ -3π/4    S4(z)
+              elseif angle(z-z_0) ≈ -π/4     S6(z)
+              end, Γ);
 
     Φ = transpose(rhsolve(transpose(G), n));
     z = Fun(ℂ)
@@ -112,8 +108,8 @@ end
 function pl2def_no_s2_neg_x2((s1,s2,s3),x; n=450)
     @assert mod(n,9) == 0
     @assert abs(s1 - s2 + s3 + s1*s2*s3) ≤ 100eps()
-    @assert x<0
     @assert s2 == 0
+    @assert x < 0
     
     z_0 = sqrt(-x)/2
 
