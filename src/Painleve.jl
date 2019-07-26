@@ -115,12 +115,12 @@ function pl2def_no_s2_neg_x2((s1,s2,s3),x; n=450)
     
     ΓD  = Segment(-z_0, z_0)  
     Γ1  = Segment(z_0, z_0 + 2.5exp(im*π/4))
-    ΓLR = Segment(z_0, z_0 + 2.5exp(im*3π/4))
+    ΓLR = Segment(z_0 + 2.5exp(im*3π/4), z_0)
     ΓLL = Segment(-z_0, -z_0 + 2.5exp(im*π/4))
     Γ3  = Segment(-z_0, -z_0 + 2.5exp(im*3π/4))
     Γ4  = Segment(-z_0, -z_0 + 2.5exp(-im*3π/4))
     ΓUR = Segment(-z_0, -z_0 + 2.5exp(-im*π/4))
-    ΓUL = Segment(z_0, z_0 + 2.5exp(-im*3π/4)) 
+    ΓUL = Segment(z_0 + 2.5exp(-im*3π/4), z_0) 
     Γ6  = Segment(z_0, z_0 + 2.5exp(-im*π/4)) 
     Γ = ΓD ∪ Γ1 ∪ ΓLR ∪ ΓLL ∪ Γ3 ∪ Γ4 ∪ ΓUR ∪ ΓUL ∪ Γ6
     
