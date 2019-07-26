@@ -8,35 +8,30 @@ function painleve2_6ray((s1,s2,s3),x; n=600)
     @assert mod(n,6) == 0
 	@assert abs(s1 - s2 + s3 + s1*s2*s3) ≤ 100eps()
 
-	Γ = Segment(0, 2.5exp(im*π/6))   ∪
-    Segment(0, 2.5exp(im*π/2))       ∪
-    Segment(0, 2.5exp(5im*π/6))      ∪
-    Segment(0, 2.5exp(-5im*π/6))     ∪
-    Segment(0, 2.5exp(-im*π/2))      ∪
-    Segment(0, 2.5exp(-im*π/6));
+	Γ1 = Segment(0, 2.5exp(im*π/6))
+    Γ2 = Segment(0, 2.5exp(im*π/2))       
+    Γ3 = Segment(0, 2.5exp(5im*π/6))      
+    Γ4 = Segment(0, 2.5exp(-5im*π/6))     
+    Γ5 = Segment(0, 2.5exp(-im*π/2))      
+    Γ6 = Segment(0, 2.5exp(-im*π/6))
+    Γ = Γ1 ∪ Γ2 ∪ Γ3 ∪ Γ4 ∪ Γ5 ∪ Γ6
     
     Θ(z) = 8/3*z^3+2*x*z
+    
+    S1(z) = [1 0; s1*exp(im*Θ(z)) 1]
+    S2(z) = [1 s2*exp(-im*Θ(z)); 0 1]
+    S3(z) = [1 0; s3*exp(im*Θ(z)) 1]
+    S4(z) = [1 -s1*exp(-im*Θ(z)); 0 1]
+    S5(z) = [1 0; -s2*exp(im*Θ(z)) 1]
+    S6(z) = [1 -s3*exp(-im*Θ(z)); 0 1]
 
-    G = Fun( z -> if angle(z) ≈ π/6
-                    [1                  0;
-                     s1*exp(im*Θ(z))    1]
-                elseif angle(z) ≈ π/2
-                    [1                  s2*exp(-im*Θ(z));
-                     0                  1]
-                elseif angle(z) ≈ 5π/6
-                    [1                  0;
-                     s3*exp(im*Θ(z))    1]
-                elseif angle(z) ≈ -π/6
-                    [1                  -s3*exp(-im*Θ(z));
-                     0                  1]
-                elseif angle(z) ≈ -π/2
-                    [1                  0;
-                     -s2*exp(im*Θ(z))   1]
-                elseif angle(z) ≈ -5π/6
-                    [1                  -s1*exp(-im*Θ(z));
-                     0                  1]
-                end
-                    , Γ);
+    G = Fun( z ->   if angle(z) ≈ π/6    S1(z)
+                elseif angle(z) ≈ π/2    S2(z)
+                elseif angle(z) ≈ 5π/6   S3(z)
+                elseif angle(z) ≈ -5π/6  S4(z)
+                elseif angle(z) ≈ -π/2   S5(z)
+                elseif angle(z) ≈ -π/6   S6(z)
+                end, Γ);
 
     Φ = transpose(rhsolve(transpose(G), n));
     z = Fun(ℂ)
@@ -51,27 +46,24 @@ function pl2def_no_s2_pos_x((s1,s2,s3),x; n=400)
     
     z_0 = (im*sqrt(x))/2
 
-    Γ = Segment(z_0, z_0 + 2.5)      ∪
-        Segment(z_0, z_0 - 2.5)      ∪
-        Segment(-z_0, -z_0 + 2.5)    ∪
-        Segment(-z_0, -z_0 - 2.5)
+    Γ1 = Segment(z_0, z_0 + 2.5)
+    Γ3 = Segment(z_0, z_0 - 2.5)       
+    Γ4 = Segment(-z_0, -z_0 - 2.5)      
+    Γ6 = Segment(-z_0, -z_0 + 2.5)
+    Γ = Γ1 ∪ Γ3 ∪ Γ4 ∪ Γ6
 
     Θ(z) = 8/3*z^3+2*x*z
     
-    G = Fun( z -> if angle(z-z_0) ≈ 0
-                    [1                  0;
-                     s1*exp(im*Θ(z))    1]
-                elseif angle(z-z_0) ≈ π
-                    [1                  0;
-                     s3*exp(im*Θ(z))    1]
-                elseif angle(z+z_0) ≈ 0
-                    [1                  -s3*exp(-im*Θ(z));
-                     0                  1]
-                elseif abs(angle(z+z_0)) ≈ π
-                    [1                  -s1*exp(-im*Θ(z));
-                     0                  1]
-                end
-                    , Γ);
+    S1(z) = [1 0; s1*exp(im*Θ(z)) 1]
+    S3(z) = [1 0; s3*exp(im*Θ(z)) 1]
+    S4(z) = [1 -s1*exp(-im*Θ(z)); 0 1]
+    S6(z) = [1 -s3*exp(-im*Θ(z)); 0 1]
+
+    G = Fun( z ->   if angle(z-z_0) ≈ 0       S1(z)
+                elseif angle(z-z_0) ≈ π       S3(z)
+                elseif abs(angle(z+z_0)) ≈ π  S4(z)
+                elseif angle(z+z_0) ≈ 0       S6(z)
+                end, Γ);
 
     Φ = transpose(rhsolve(transpose(G), n));
     z = Fun(ℂ)
