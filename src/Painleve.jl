@@ -112,48 +112,38 @@ function pl2def_no_s2_neg_x2((s1,s2,s3),x; n=450)
     @assert x < 0
     
     z_0 = sqrt(-x)/2
-
-    Γ = Segment(-z_0, z_0)                      ∪
-        Segment(z_0, z_0 + 2.5exp(im*π/4))      ∪
-        Segment(z_0 + 2.5exp(im*3π/4), z_0)     ∪
-        Segment(z_0 + 2.5exp(-im*3π/4), z_0)    ∪
-        Segment(z_0, z_0 + 2.5exp(-im*π/4))     ∪
-        Segment(-z_0, -z_0 + 2.5exp(im*π/4))    ∪
-        Segment(-z_0, -z_0 + 2.5exp(im*3π/4))   ∪
-        Segment(-z_0, -z_0 + 2.5exp(-im*3π/4))  ∪
-        Segment(-z_0, -z_0 + 2.5exp(-im*π/4))      
+    
+    ΓD  = Segment(-z_0, z_0)  
+    Γ1  = Segment(z_0, z_0 + 2.5exp(im*π/4))
+    ΓLR = Segment(z_0, z_0 + 2.5exp(im*3π/4))
+    ΓLL = Segment(-z_0, -z_0 + 2.5exp(im*π/4))
+    Γ3  = Segment(-z_0, -z_0 + 2.5exp(im*3π/4))
+    Γ4  = Segment(-z_0, -z_0 + 2.5exp(-im*3π/4))
+    ΓUR = Segment(-z_0, -z_0 + 2.5exp(-im*π/4))
+    ΓUL = Segment(z_0, z_0 + 2.5exp(-im*3π/4)) 
+    Γ6  = Segment(z_0, z_0 + 2.5exp(-im*π/4)) 
+    Γ = ΓD ∪ Γ1 ∪ ΓLR ∪ ΓLL ∪ Γ3 ∪ Γ4 ∪ ΓUR ∪ ΓUL ∪ Γ6
+    
+    D(z)  = [1-s1*s3 0; 0 1/(1-s1*s3)]
+    S1(z) = [1 0; s1*exp(im*Θ(z)) 1]
+    L(z)  = [1 0; s1*exp(im*Θ(z))/(1-s1*s3) 1]
+    S3(z) = [1 0; s3*exp(im*Θ(z)) 1]
+    S4(z) = [1 -s1*exp(-im*Θ(z)); 0 1]
+    U(z)  = [1 -s3*exp(-im*Θ(z))/(1-s1*s3); 0 1]
+    S6(z) = [1 -s3*exp(-im*Θ(z)); 0 1]
     
     Θ(z) = 8/3*z^3+2*x*z
     
-    G = Fun( z -> if imag(z) ≈ 0
-                    [1-s1*s3            0;
-                     0                  1/(1-s1*s3)]
-                elseif angle(z-z_0) ≈ π/4
-                    [1                  0;
-                     s1*exp(im*Θ(z))    1]
-                elseif angle(z-z_0) ≈ 3π/4
-                    [1                            0;
-                     s1*exp(im*Θ(z))/(1-s1*s2)    1]
-                elseif angle(z-z_0) ≈ -3π/4
-                    [1                  -s3*exp(-im*Θ(z))/(1-s1*s2);
-                     0                  1]
-                elseif angle(z-z_0) ≈ -π/4
-                    [1                  -s3*exp(-im*Θ(z));
-                     0                  1]
-                elseif angle(z+z_0) ≈ π/4
-                     [1                            0;
-                     s1*exp(im*Θ(z))/(1-s1*s2)    1]
-                elseif angle(z+z_0) ≈ 3π/4
-                    [1                 0;
-                     s3*exp(im*Θ(z))   1]
-                elseif angle(z+z_0) ≈ -3π/4
-                    [1                  -s1*exp(-im*Θ(z));
-                     0                  1]
-                elseif angle(z+z_0) ≈ -π/4
-                    [1                  -s3*exp(-im*Θ(z))/(1-s1*s2);
-                     0                  1]
-                end
-                    , Γ);
+    G = Fun( z -> if imag(z) ≈ 0             D(z)
+              elseif angle(z-z_0) ≈ π/4      S1(z)
+              elseif angle(z-z_0) ≈ 3π/4     L(z)
+              elseif angle(z+z_0) ≈ π/4      L(z)
+              elseif angle(z+z_0) ≈ 3π/4     S3(z)
+              elseif angle(z+z_0) ≈ -3π/4    S4(z)
+              elseif angle(z+z_0) ≈ -π/4     U(z)
+              elseif angle(z-z_0) ≈ -3π/4    U(z)
+              elseif angle(z-z_0) ≈ -π/4     S6(z)
+              end, Γ);
 
     Φ = transpose(rhsolve(transpose(G), n));
     z = Fun(ℂ)
