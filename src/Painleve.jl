@@ -25,12 +25,12 @@ function painleve2_6ray((s1,s2,s3),x; n=600)
     S5(z) = [1 0; -s2*exp(im*Θ(z)) 1]
     S6(z) = [1 -s3*exp(-im*Θ(z)); 0 1]
 
-    G = Fun( z ->   if angle(z) ≈ π/6    S1(z)
-                elseif angle(z) ≈ π/2    S2(z)
-                elseif angle(z) ≈ 5π/6   S3(z)
-                elseif angle(z) ≈ -5π/6  S4(z)
-                elseif angle(z) ≈ -π/2   S5(z)
-                elseif angle(z) ≈ -π/6   S6(z)
+    G = Fun( z ->   if z in component(Γ, 1)   S1(z)
+                elseif z in component(Γ, 2)   S2(z)
+                elseif z in component(Γ, 3)   S3(z)
+                elseif z in component(Γ, 4)   S4(z)
+                elseif z in component(Γ, 5)   S5(z)
+                elseif z in component(Γ, 6)   S6(z)
                 end, Γ);
 
     Φ = transpose(rhsolve(transpose(G), n));
@@ -59,10 +59,10 @@ function pl2def_no_s2_pos_x((s1,s2,s3),x; n=400)
     S4(z) = [1 -s1*exp(-im*Θ(z)); 0 1]
     S6(z) = [1 -s3*exp(-im*Θ(z)); 0 1]
 
-    G = Fun( z ->   if angle(z-z_0) ≈ 0       S1(z)
-                elseif angle(z-z_0) ≈ π       S3(z)
-                elseif abs(angle(z+z_0)) ≈ π  S4(z)
-                elseif angle(z+z_0) ≈ 0       S6(z)
+    G = Fun( z ->   if z in component(Γ, 1)    S1(z)
+                elseif z in component(Γ, 2)    S3(z)
+                elseif z in component(Γ, 3)    S4(z)
+                elseif z in component(Γ, 4)    S6(z)
                 end, Γ);
 
     Φ = transpose(rhsolve(transpose(G), n));
@@ -93,11 +93,11 @@ function pl2def_no_s2_neg_x1((s1,s2,s3),x; n=500)
     S4(z)   = [1 -s1*exp(-im*Θ(z)); 0 1]
     S6(z)   = [1 -s3*exp(-im*Θ(z)); 0 1]    
     
-    G = Fun( z -> if imag(z) ≈ 0             S1S6(z)
-              elseif angle(z-z_0) ≈ π/4      S1(z)
-              elseif angle(z+z_0) ≈ 3π/4     S3(z)
-              elseif angle(z+z_0) ≈ -3π/4    S4(z)
-              elseif angle(z-z_0) ≈ -π/4     S6(z)
+    G = Fun( z -> if z in component(Γ, 1)    S1S6(z)
+              elseif z in component(Γ, 2)    S1(z)
+              elseif z in component(Γ, 3)    S3(z)
+              elseif z in component(Γ, 4)    S4(z)
+              elseif z in component(Γ, 5)    S6(z)
               end, Γ);
 
     Φ = transpose(rhsolve(transpose(G), n));
@@ -105,7 +105,7 @@ function pl2def_no_s2_neg_x1((s1,s2,s3),x; n=500)
     2(z*Φ[1,2])(Inf)
 end
 
-function pl2def_no_s2_neg_x2((s1,s2,s3),x; n=450)
+function pl2def_no_s2_neg_x2((s1,s2,s3),x; n=45)
     @assert mod(n,9) == 0
     @assert abs(s1 - s2 + s3 + s1*s2*s3) ≤ 100eps()
     @assert s2 == 0
@@ -134,15 +134,15 @@ function pl2def_no_s2_neg_x2((s1,s2,s3),x; n=450)
     
     Θ(z) = 8/3*z^3+2*x*z
     
-    G = Fun( z -> if imag(z) ≈ 0             D(z)
-              elseif angle(z-z_0) ≈ π/4      S1(z)
-              elseif angle(z-z_0) ≈ 3π/4     L(z)
-              elseif angle(z+z_0) ≈ π/4      L(z)
-              elseif angle(z+z_0) ≈ 3π/4     S3(z)
-              elseif angle(z+z_0) ≈ -3π/4    S4(z)
-              elseif angle(z+z_0) ≈ -π/4     U(z)
-              elseif angle(z-z_0) ≈ -3π/4    U(z)
-              elseif angle(z-z_0) ≈ -π/4     S6(z)
+    G = Fun( z -> if z in component(Γ, 1)    D(z)
+              elseif z in component(Γ, 2)    S1(z)
+              elseif z in component(Γ, 3)    L(z)
+              elseif z in component(Γ, 4)    L(z)
+              elseif z in component(Γ, 5)    S3(z)
+              elseif z in component(Γ, 6)    S4(z)
+              elseif z in component(Γ, 7)    U(z)
+              elseif z in component(Γ, 8)    U(z)
+              elseif z in component(Γ, 9)    S6(z)
               end, Γ);
 
     Φ = transpose(rhsolve(transpose(G), n));
