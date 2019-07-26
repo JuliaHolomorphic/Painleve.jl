@@ -67,10 +67,7 @@ function pl2def_no_s2_pos_x((s1,s2,s3),x; n=400)
                 elseif angle(z+z_0) ≈ 0
                     [1                  -s3*exp(-im*Θ(z));
                      0                  1]
-                elseif angle(z+z_0) ≈ π
-                    [1                  -s1*exp(-im*Θ(z));
-                     0                  1]
-                elseif angle(z+z_0) ≈ -π
+                elseif abs(angle(z+z_0)) ≈ π
                     [1                  -s1*exp(-im*Θ(z));
                      0                  1]
                 end
