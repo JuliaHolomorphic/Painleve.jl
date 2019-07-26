@@ -41,7 +41,7 @@ end
 function pl2def_no_s2_pos_x((s1,s2,s3),x; n=400)
     @assert mod(n,4) == 0
     @assert abs(s1 - s2 + s3 + s1*s2*s3) ≤ 100eps()
-    @assert x>0
+    @assert x > 0
     @assert s2 == 0
     
     z_0 = (im*sqrt(x))/2
