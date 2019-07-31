@@ -2,7 +2,7 @@ module Painleve
 
 using LinearAlgebra, RiemannHilbert, ApproxFun
 
-export painleve2_6ray, pl2def_no_s2_pos_x, pl2def_no_s2_neg_x1, pl2def_no_s2_neg_x2
+export painleve2_6ray, pl2def_no_s2_pos_x, pl2def_no_s2_neg_x1, pl2def_no_s2_neg_x2, pl2def_no_s2_neg_x3
 
 function painleve2_6ray((s1,s2,s3),x; n=600)
     @assert mod(n,6) == 0
@@ -201,6 +201,7 @@ function pl2def_no_s2_neg_x3((s1,s2,s3),x; n=450)
     S6(z)    = [1 -s3*exp(-im*Θ(z)); 0 1]
     
     P(z)     = [f(z)^(log(1-s1*s3)) 0; 0 f(z)^(log(1/(1-s1*s3)))]
+    
     Pi(z)    = inv(P(z))
     
     G = Fun( z -> if z in component(Γ, 1)     P(z)S1(z)Pi(z)
