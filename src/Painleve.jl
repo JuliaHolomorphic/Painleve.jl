@@ -163,27 +163,27 @@ function pl2def_no_s2_neg_x3((s1,s2,s3),x; n=450)
     z_0 = sqrt(-x)/2
     d = cos(π/4) + im*cos(π/4)
      
-    Γ1  = Segment(z_0 + exp(im*π/4), z_0 + exp(im*π/4) + 2.5exp(im*π/4))
-    ΓUi = Segment(z_0 + exp(im*3π/4), z_0 + exp(im*3π/4) + 2.5exp(im*3π/4))
-    ΓU  = Segment(-z_0 + exp(im*π/4), -z_0 + exp(im*π/4) + 2.5exp(im*π/4))
-    Γ3  = Segment(-z_0 + exp(im*3π/4), -z_0 + exp(im*3π/4) + 2.5exp(im*3π/4))
-    Γ4  = Segment(-z_0 + exp(-im*3π/4), -z_0 + exp(-im*3π/4) + 2.5exp(-im*3π/4))
-    ΓL  = Segment(-z_0 + exp(-im*π/4), -z_0 + exp(-im*π/4) + 2.5exp(-im*π/4))
-    ΓLi = Segment(z_0 + exp(-im*3π/4), z_0 + exp(-im*3π/4) + 2.5exp(-im*3π/4)) 
-    Γ6  = Segment(z_0 + exp(-im*π/4), z_0 + exp(-im*π/4) + 2.5exp(-im*π/4)) 
+    Γ1  = Segment(z_0 + 0.5exp(im*π/4), z_0 + 0.5exp(im*π/4) + 2.5exp(im*π/4))
+    ΓUi = Segment(z_0 + 0.5exp(im*3π/4), z_0 + 0.5exp(im*3π/4) + 2.5exp(im*3π/4))
+    ΓU  = Segment(-z_0 + 0.5exp(im*π/4), -z_0 + 0.5exp(im*π/4) + 2.5exp(im*π/4))
+    Γ3  = Segment(-z_0 + 0.5exp(im*3π/4), -z_0 + 0.5exp(im*3π/4) + 2.5exp(im*3π/4))
+    Γ4  = Segment(-z_0 + 0.5exp(-im*3π/4), -z_0 + 0.5exp(-im*3π/4) + 2.5exp(-im*3π/4))
+    ΓL  = Segment(-z_0 + 0.5exp(-im*π/4), -z_0 + 0.5exp(-im*π/4) + 2.5exp(-im*π/4))
+    ΓLi = Segment(z_0 + 0.5exp(-im*3π/4), z_0 + 0.5exp(-im*3π/4) + 2.5exp(-im*3π/4)) 
+    Γ6  = Segment(z_0 + 0.5exp(-im*π/4), z_0 + 0.5exp(-im*π/4) + 2.5exp(-im*π/4)) 
     
-    C11 = Arc(z_0+0*im,1,(π/4,-π/4))
-    C12 = Arc(z_0+0*im,1,(-π/4,-3π/4))
-    C13 = Arc(z_0+0*im,1,(-3π/4,-π))
-    C14 = Arc(z_0+0*im,1,(π,3π/4))
-    C15 = Arc(z_0+0*im,1,(3π/4,π/4))
+    C11 = Segment(z_0 + 0.5exp(im*π/4), z_0 + 0.5exp(-im*π/4))
+    C12 = Segment(z_0 + 0.5exp(-im*π/4), z_0 + 0.5exp(-im*3π/4))
+    C13 = Segment(z_0 + 0.5exp(-im*3π/4), z_0 + 0.5exp(-im*π))
+    C14 = Segment(z_0 + 0.5exp(im*π), z_0 + 0.5exp(im*3π/4))
+    C15 = Segment(z_0 + 0.5exp(3im*π/4), z_0 + 0.5exp(im*π/4))
     
-    C21 = Arc(-z_0+0*im,1,(3π/4,5π/4))
-    C22 = Arc(-z_0+0*im,1,(-3π/4,-π/4))
-    C23 = Arc(-z_0+0*im,1,(-π/4,0))
-    C24 = Arc(-z_0+0*im,1,(0,π/4))
-    C25 = Arc(-z_0+0*im,1,(π/4,3π/4))
-    
+    C21 = Segment(-z_0 + 0.5exp(im*3π/4), -z_0 + 0.5exp(im*5π/4))
+    C22 = Segment(-z_0 + 0.5exp(-im*3π/4), -z_0 + 0.5exp(-im*π/4))
+    C23 = Segment(-z_0 + 0.5exp(-im*π/4), -z_0 + 0.5exp(-im*0))
+    C24 = Segment(-z_0 + 0.5exp(im*0), -z_0 + 0.5exp(im*π/4))
+    C25 = Segment(-z_0 + 0.5exp(im*π/4), -z_0 + 0.5exp(im*3π/4))
+
     Γ = Γ1 ∪ ΓUi ∪ ΓU ∪ Γ3 ∪ Γ4 ∪ ΓL ∪ ΓLi ∪ Γ6 ∪ 
         C11 ∪ C12 ∪ C13 ∪ C14 ∪ C15 ∪ C21 ∪ C22 ∪ C23 ∪ C24 ∪ C25
     
