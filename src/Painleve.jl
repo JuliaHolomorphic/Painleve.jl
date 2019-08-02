@@ -161,47 +161,45 @@ function pl2def_no_s2_neg_x3((s1,s2,s3),x; n=450)
     @assert x < 0
     
     z_0 = sqrt(-x)/2
-    d = cos(π/4) + im*cos(π/4)
      
-    Γ1  = Segment(z_0 + 0.5exp(im*π/4), z_0 + 0.5exp(im*π/4) + 2.5exp(im*π/4))
-    ΓUi = Segment(z_0 + 0.5exp(im*3π/4), z_0 + 0.5exp(im*3π/4) + 2.5exp(im*3π/4))
-    ΓU  = Segment(-z_0 + 0.5exp(im*π/4), -z_0 + 0.5exp(im*π/4) + 2.5exp(im*π/4))
-    Γ3  = Segment(-z_0 + 0.5exp(im*3π/4), -z_0 + 0.5exp(im*3π/4) + 2.5exp(im*3π/4))
-    Γ4  = Segment(-z_0 + 0.5exp(-im*3π/4), -z_0 + 0.5exp(-im*3π/4) + 2.5exp(-im*3π/4))
-    ΓL  = Segment(-z_0 + 0.5exp(-im*π/4), -z_0 + 0.5exp(-im*π/4) + 2.5exp(-im*π/4))
-    ΓLi = Segment(z_0 + 0.5exp(-im*3π/4), z_0 + 0.5exp(-im*3π/4) + 2.5exp(-im*3π/4)) 
-    Γ6  = Segment(z_0 + 0.5exp(-im*π/4), z_0 + 0.5exp(-im*π/4) + 2.5exp(-im*π/4)) 
+    Γ1  = Segment(z_0 + exp(im*π/4), z_0 + exp(im*π/4) + 2.5exp(im*π/4))
+    ΓUi = Segment(z_0 + exp(im*3π/4), z_0 + exp(im*3π/4) + 2.5exp(im*3π/4))
+    ΓU  = Segment(-z_0 + exp(im*π/4), -z_0 + exp(im*π/4) + 2.5exp(im*π/4))
+    Γ3  = Segment(-z_0 + exp(im*3π/4), -z_0 + exp(im*3π/4) + 2.5exp(im*3π/4))
+    Γ4  = Segment(-z_0 + exp(-im*3π/4), -z_0 + exp(-im*3π/4) + 2.5exp(-im*3π/4))
+    ΓL  = Segment(-z_0 + exp(-im*π/4), -z_0 + exp(-im*π/4) + 2.5exp(-im*π/4))
+    ΓLi = Segment(z_0 + exp(-im*3π/4), z_0 + exp(-im*3π/4) + 2.5exp(-im*3π/4)) 
+    Γ6  = Segment(z_0 + exp(-im*π/4), z_0 + exp(-im*π/4) + 2.5exp(-im*π/4)) 
     
-    C11 = Segment(z_0 + 0.5exp(im*π/4), z_0 + 0.5exp(-im*π/4))
-    C12 = Segment(z_0 + 0.5exp(-im*π/4), z_0 + 0.5exp(-im*3π/4))
-    C13 = Segment(z_0 + 0.5exp(-im*3π/4), z_0 + 0.5exp(-im*π))
-    C14 = Segment(z_0 + 0.5exp(im*π), z_0 + 0.5exp(im*3π/4))
-    C15 = Segment(z_0 + 0.5exp(3im*π/4), z_0 + 0.5exp(im*π/4))
+    C11 = Segment(z_0 + exp(im*π/4), z_0 + exp(-im*π/4))
+    C12 = Segment(z_0 + exp(-im*π/4), z_0 + exp(-im*3π/4))
+    C13 = Segment(z_0 + exp(-im*3π/4), z_0 + exp(-im*π))
+    C14 = Segment(z_0 + exp(im*π), z_0 + exp(im*3π/4))
+    C15 = Segment(z_0 + exp(3im*π/4), z_0 + exp(im*π/4))
     
-    C21 = Segment(-z_0 + 0.5exp(im*3π/4), -z_0 + 0.5exp(im*5π/4))
-    C22 = Segment(-z_0 + 0.5exp(-im*3π/4), -z_0 + 0.5exp(-im*π/4))
-    C23 = Segment(-z_0 + 0.5exp(-im*π/4), -z_0 + 0.5exp(-im*0))
-    C24 = Segment(-z_0 + 0.5exp(im*0), -z_0 + 0.5exp(im*π/4))
-    C25 = Segment(-z_0 + 0.5exp(im*π/4), -z_0 + 0.5exp(im*3π/4))
+    C21 = Segment(-z_0 + exp(im*3π/4), -z_0 + exp(im*5π/4))
+    C22 = Segment(-z_0 + exp(-im*3π/4), -z_0 + exp(-im*π/4))
+    C23 = Segment(-z_0 + exp(-im*π/4), -z_0 + exp(-im*0))
+    C24 = Segment(-z_0 + exp(im*0), -z_0 + exp(im*π/4))
+    C25 = Segment(-z_0 + exp(im*π/4), -z_0 + exp(im*3π/4))
 
     Γ = Γ1 ∪ ΓUi ∪ ΓU ∪ Γ3 ∪ Γ4 ∪ ΓL ∪ ΓLi ∪ Γ6 ∪ 
         C11 ∪ C12 ∪ C13 ∪ C14 ∪ C15 ∪ C21 ∪ C22 ∪ C23 ∪ C24 ∪ C25
     
     Θ(z) = 8/3*z^3+2*x*z
-    f(z) = ((1+2*z)/(2*z-1))^(im/(2*π))
+    f(z) = ((z+z_0)/(z-z_0))^(im/(2*π))
     
     D(z)     = [1-s1*s3 0; 0 1/(1-s1*s3)]
     S1(z)    = [1 0; s1*exp(im*Θ(z)) 1]
-    Ui(z)    = [1 s3*exp(-im*Θ(z))/(1-s1*s3); 0 1]
     U(z)     = [1 -s3*exp(-im*Θ(z))/(1-s1*s3); 0 1]
+    Ui(z)    = inv(U(z))
     S3(z)    = [1 0; s3*exp(im*Θ(z)) 1]
     S4(z)    = [1 -s1*exp(-im*Θ(z)); 0 1]
     L(z)     = [1 0; s1*exp(im*Θ(z))/(1-s1*s3) 1]
-    Li(z)    = [1 0; -s1*exp(im*Θ(z))/(1-s1*s3) 1]
+    Li(z)    = inv(L(z))
     S6(z)    = [1 -s3*exp(-im*Θ(z)); 0 1]
     
     P(z)     = [f(z)^(log(1-s1*s3)) 0; 0 f(z)^(log(1/(1-s1*s3)))]
-    
     Pi(z)    = inv(P(z))
     
     G = Fun( z -> if z in component(Γ, 1)     P(z)S1(z)Pi(z)
@@ -215,14 +213,14 @@ function pl2def_no_s2_neg_x3((s1,s2,s3),x; n=450)
             
               elseif z in component(Γ, 9)     Li(z)S6(z)Pi(z)
               elseif z in component(Γ, 10)    Li(z)Pi(z)
-              elseif z in component(Γ, 11)    Pi(z)
-              elseif z in component(Γ, 12)    D(z)Pi(z)
+              elseif z in component(Γ, 11)    Pi(z-im*eps())
+              elseif z in component(Γ, 12)    D(z)Pi(z+im*eps())
               elseif z in component(Γ, 13)    Li(z)S6(z)S1(z)Pi(z)
             
               elseif z in component(Γ, 14)    D(z)U(z)S3(z)Pi(z)
               elseif z in component(Γ, 15)    D(z)U(z)S3(z)S4(z)Pi(z)
-              elseif z in component(Γ, 16)    Pi(z)
-              elseif z in component(Γ, 17)    D(z)Pi(z)
+              elseif z in component(Γ, 16)    Pi(z-im*eps())
+              elseif z in component(Γ, 17)    D(z)Pi(z+im*eps())
               elseif z in component(Γ, 18)    D(z)U(z)Pi(z)
             
               end, Γ);
