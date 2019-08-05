@@ -45,7 +45,7 @@ function pl2def_no_s2_pos_x((s1,s2,s3),x; n=400)
     @assert s2 == 0
     
     z_0 = (im*sqrt(x))/2
-
+    
     Γ1 = Segment(z_0, z_0 + 2.5)
     Γ3 = Segment(z_0, z_0 - 2.5)       
     Γ4 = Segment(-z_0, -z_0 - 2.5)      
