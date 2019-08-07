@@ -70,62 +70,59 @@ function pl2def_no_s2_pos_x((s1,s2,s3),x; n=400)
     2(z*Φ[1,2])(Inf)
 end
 
-function pl2def_no_s2_neg_x1((s1,s2,s3),x; n=500)
+function pl2def_no_s2_neg_x1((s1,s2,s3),x; n=500, l=0.7)
     @assert mod(n,5) == 0
     @assert abs(s1 - s2 + s3 + s1*s2*s3) ≤ 100eps()
     @assert s2 == 0
     @assert x < 0
+    @assert l*cos(π/4) < 1/2
     
-    z_0 = sqrt(-x)/2
-
-    Γ6Γ1 = Segment(-z_0, z_0)  
-    Γ1   = Segment(z_0, z_0 + 2.5exp(im*π/4))
-    Γ3   = Segment(-z_0, -z_0 + 2.5exp(im*3π/4))
-    Γ4   = Segment(-z_0, -z_0 + 2.5exp(-im*3π/4))
-    Γ6   = Segment(z_0, z_0 + 2.5exp(-im*π/4))  
+    Γ6Γ1 = Segment(-0.5, 0.5)  
+    Γ1   = Segment(0.5, 0.5 + l*exp(im*π/4))
+    Γ3   = Segment(-0.5, -0.5 + l*exp(im*3π/4))
+    Γ4   = Segment(-0.5, -0.5 + l*exp(-im*3π/4))
+    Γ6   = Segment(0.5, 0.5 + l*exp(-im*π/4))  
     Γ = Γ6Γ1 ∪ Γ1 ∪ Γ3 ∪ Γ4 ∪ Γ6
     
-    Θ(z) = 8/3*z^3+2*x*z
+    Θ(z) = (2*z/3)*(sqrt(-x)^3)*(4*z^2-3)
     
-    S1S6(z) = [1-s1*s3 -s3*exp(-im*Θ(z)); s1*exp(im*Θ(z)) 1]
     S1(z)   = [1 0; s1*exp(im*Θ(z)) 1]
     S3(z)   = [1 0; s3*exp(im*Θ(z)) 1]
     S4(z)   = [1 -s1*exp(-im*Θ(z)); 0 1]
     S6(z)   = [1 -s3*exp(-im*Θ(z)); 0 1]    
     
-    G = Fun( z -> if z in component(Γ, 1)    S1S6(z)
+    G = Fun( z -> if z in component(Γ, 1)    S6(z)S1(z)
               elseif z in component(Γ, 2)    S1(z)
               elseif z in component(Γ, 3)    S3(z)
               elseif z in component(Γ, 4)    S4(z)
               elseif z in component(Γ, 5)    S6(z)
               end, Γ);
 
-    Φ = transpose(rhsolve(transpose(G), n));
+    Φ = transpose(rhsolve(transpose(G), n))*sqrt(-x);
     z = Fun(ℂ)
     2(z*Φ[1,2])(Inf)
 end
 
-function pl2def_no_s2_neg_x2((s1,s2,s3),x; n=450)
+function pl2def_no_s2_neg_x2((s1,s2,s3),x; n=450, l=0.7)
     @assert mod(n,9) == 0
     @assert abs(s1 - s2 + s3 + s1*s2*s3) ≤ 100eps()
     @assert s2 == 0
     @assert s1*s3 != 1
     @assert x < 0
+    @assert l*cos(π/4) < 1/2
     
-    z_0 = sqrt(-x)/2
-    
-    ΓD  = Segment(-z_0, z_0)  
-    Γ1  = Segment(z_0, z_0 + 2.5exp(im*π/4))
-    ΓUi = Segment(z_0, z_0 + 2.5exp(im*3π/4))
-    ΓU  = Segment(-z_0, -z_0 + 2.5exp(im*π/4))
-    Γ3  = Segment(-z_0, -z_0 + 2.5exp(im*3π/4))
-    Γ4  = Segment(-z_0, -z_0 + 2.5exp(-im*3π/4))
-    ΓL  = Segment(-z_0, -z_0 + 2.5exp(-im*π/4))
-    ΓLi = Segment(z_0, z_0 + 2.5exp(-im*3π/4)) 
-    Γ6  = Segment(z_0, z_0 + 2.5exp(-im*π/4)) 
+    ΓD  = Segment(-0.5, 0.5)  
+    Γ1  = Segment(0.5, 0.5 + l*exp(im*π/4))
+    ΓUi = Segment(0.5, 0.5 + l*exp(im*3π/4))
+    ΓU  = Segment(-0.5, -0.5 + l*exp(im*π/4))
+    Γ3  = Segment(-0.5, -0.5 + l*exp(im*3π/4))
+    Γ4  = Segment(-0.5, -0.5 + l*exp(-im*3π/4))
+    ΓL  = Segment(-0.5, -0.5 + l*exp(-im*π/4))
+    ΓLi = Segment(0.5, 0.5 + l*exp(-im*3π/4)) 
+    Γ6  = Segment(0.5, 0.5 + l*exp(-im*π/4)) 
     Γ = ΓD ∪ Γ1 ∪ ΓUi ∪ ΓU ∪ Γ3 ∪ Γ4 ∪ ΓL ∪ ΓLi ∪ Γ6
     
-    Θ(z) = 8/3*z^3+2*x*z
+    Θ(z) = (2*z/3)*(sqrt(-x)^3)*(4*z^2-3)
     
     D(z)     = [1-s1*s3 0; 0 1/(1-s1*s3)]
     S1(z)    = [1 0; s1*exp(im*Θ(z)) 1]
@@ -148,59 +145,60 @@ function pl2def_no_s2_neg_x2((s1,s2,s3),x; n=450)
               elseif z in component(Γ, 9)    S6(z)
               end, Γ);
 
-    Φ = transpose(rhsolve(transpose(G), n));
+    Φ = transpose(rhsolve(transpose(G), n))*sqrt(-x);
     z = Fun(ℂ)
     2(z*Φ[1,2])(Inf)
 end
 
-function pl2def_no_s2_neg_x3((s1,s2,s3),x; n=450)
+function pl2def_no_s2_neg_x3((s1,s2,s3),x; n=450, l=0.6, R=0.1)
     @assert mod(n,18) == 0
     @assert abs(s1 - s2 + s3 + s1*s2*s3) ≤ 100eps()
     @assert s2 == 0
     @assert s1*s3 != 1
     @assert x < 0
-    
-    z_0 = sqrt(-x)/2
+    @assert (l+R)*cos(π/4) < 0.5
      
-    Γ1  = Segment(z_0 + exp(im*π/4), z_0 + exp(im*π/4) + 2.5exp(im*π/4))
-    ΓUi = Segment(z_0 + exp(im*3π/4), z_0 + exp(im*3π/4) + 2.5exp(im*3π/4))
-    ΓU  = Segment(-z_0 + exp(im*π/4), -z_0 + exp(im*π/4) + 2.5exp(im*π/4))
-    Γ3  = Segment(-z_0 + exp(im*3π/4), -z_0 + exp(im*3π/4) + 2.5exp(im*3π/4))
-    Γ4  = Segment(-z_0 + exp(-im*3π/4), -z_0 + exp(-im*3π/4) + 2.5exp(-im*3π/4))
-    ΓL  = Segment(-z_0 + exp(-im*π/4), -z_0 + exp(-im*π/4) + 2.5exp(-im*π/4))
-    ΓLi = Segment(z_0 + exp(-im*3π/4), z_0 + exp(-im*3π/4) + 2.5exp(-im*3π/4)) 
-    Γ6  = Segment(z_0 + exp(-im*π/4), z_0 + exp(-im*π/4) + 2.5exp(-im*π/4)) 
+    Γ1  = Segment(0.5 + R*exp(im*π/4), 0.5 + R*exp(im*π/4) + l*exp(im*π/4))
+    ΓUi = Segment(0.5 + R*exp(im*3π/4), 0.5 + R*exp(im*3π/4) + l*exp(im*3π/4))
+    ΓU  = Segment(-0.5 + R*exp(im*π/4), -0.5 + R*exp(im*π/4) + l*exp(im*π/4))
+    Γ3  = Segment(-0.5 + R*exp(im*3π/4), -0.5 + R*exp(im*3π/4) + l*exp(im*3π/4))
+    Γ4  = Segment(-0.5 + R*exp(-im*3π/4), -0.5 + R*exp(-im*3π/4) + l*exp(-im*3π/4))
+    ΓL  = Segment(-0.5 + R*exp(-im*π/4), -0.5 + R*exp(-im*π/4) + l*exp(-im*π/4))
+    ΓLi = Segment(0.5 + R*exp(-im*3π/4), 0.5 + R*exp(-im*3π/4) + l*exp(-im*3π/4)) 
+    Γ6  = Segment(0.5 + R*exp(-im*π/4), 0.5 + R*exp(-im*π/4) + l*exp(-im*π/4)) 
     
-    C11 = Segment(z_0 + exp(im*π/4), z_0 + exp(-im*π/4))
-    C12 = Segment(z_0 + exp(-im*π/4), z_0 + exp(-im*3π/4))
-    C13 = Segment(z_0 + exp(-im*3π/4), z_0 + exp(-im*π))
-    C14 = Segment(z_0 + exp(im*π), z_0 + exp(im*3π/4))
-    C15 = Segment(z_0 + exp(3im*π/4), z_0 + exp(im*π/4))
+    C11 = Segment(0.5 + R*exp(im*π/4), 0.5 + R*exp(-im*π/4))
+    C12 = Segment(0.5 + R*exp(-im*π/4), 0.5 + R*exp(-im*3π/4))
+    C13 = Segment(0.5 + R*exp(-im*3π/4), 0.5 + R*exp(-im*π))
+    C14 = Segment(0.5 + R*exp(im*π), 0.5 + R*exp(im*3π/4))
+    C15 = Segment(0.5 + R*exp(3im*π/4), 0.5 + R*exp(im*π/4))
     
-    C21 = Segment(-z_0 + exp(im*3π/4), -z_0 + exp(im*5π/4))
-    C22 = Segment(-z_0 + exp(-im*3π/4), -z_0 + exp(-im*π/4))
-    C23 = Segment(-z_0 + exp(-im*π/4), -z_0 + exp(-im*0))
-    C24 = Segment(-z_0 + exp(im*0), -z_0 + exp(im*π/4))
-    C25 = Segment(-z_0 + exp(im*π/4), -z_0 + exp(im*3π/4))
+    C21 = Segment(-0.5 + R*exp(im*-3π/4), -0.5 + R*exp(im*-5π/4))
+    C22 = Segment(-0.5 + R*exp(im*3π/4), -0.5 + R*exp(im*π/4))
+    C23 = Segment(-0.5 + R*exp(im*π/4), -0.5 + R*exp(im*0))
+    C24 = Segment(-0.5 + R*exp(im*0), -0.5 + R*exp(-im*π/4))
+    C25 = Segment(-0.5 + R*exp(-im*π/4), -0.5 + R*exp(-im*3π/4))
 
     Γ = Γ1 ∪ ΓUi ∪ ΓU ∪ Γ3 ∪ Γ4 ∪ ΓL ∪ ΓLi ∪ Γ6 ∪ 
         C11 ∪ C12 ∪ C13 ∪ C14 ∪ C15 ∪ C21 ∪ C22 ∪ C23 ∪ C24 ∪ C25
     
-    Θ(z) = 8/3*z^3+2*x*z
-    f(z) = ((z+z_0)/(z-z_0))^(im/(2*π))
+    Θ(z) = (2*z/3)*(sqrt(-x)^3)*(4*z^2-3)
+    f(z) = ((1+2z)/(2z-1))^(im/(2*π))
     
     D(z)     = [1-s1*s3 0; 0 1/(1-s1*s3)]
     S1(z)    = [1 0; s1*exp(im*Θ(z)) 1]
+    Ui(z)    = [1 s3*exp(-im*Θ(z))/(1-s1*s3); 0 1]
     U(z)     = [1 -s3*exp(-im*Θ(z))/(1-s1*s3); 0 1]
-    Ui(z)    = inv(U(z))
     S3(z)    = [1 0; s3*exp(im*Θ(z)) 1]
+    S3i(z)    = [1 0; -s3*exp(im*Θ(z)) 1]
     S4(z)    = [1 -s1*exp(-im*Θ(z)); 0 1]
+    S4i(z)    = [1 s1*exp(-im*Θ(z)); 0 1]
     L(z)     = [1 0; s1*exp(im*Θ(z))/(1-s1*s3) 1]
-    Li(z)    = inv(L(z))
+    Li(z)    = [1 0; -s1*exp(im*Θ(z))/(1-s1*s3) 1]
     S6(z)    = [1 -s3*exp(-im*Θ(z)); 0 1]
     
     P(z)     = [f(z)^(log(1-s1*s3)) 0; 0 f(z)^(log(1/(1-s1*s3)))]
-    Pi(z)    = inv(P(z))
+    Pi(z)    = [f(z)^(log(1/(1-s1*s3))) 0; 0 f(z)^(log(1-s1*s3))]
     
     G = Fun( z -> if z in component(Γ, 1)     P(z)S1(z)Pi(z)
               elseif z in component(Γ, 2)     P(z)Ui(z)Pi(z)
@@ -217,15 +215,15 @@ function pl2def_no_s2_neg_x3((s1,s2,s3),x; n=450)
               elseif z in component(Γ, 12)    D(z)Pi(z+im*eps())
               elseif z in component(Γ, 13)    Li(z)S6(z)S1(z)Pi(z)
             
-              elseif z in component(Γ, 14)    D(z)U(z)S3(z)Pi(z)
-              elseif z in component(Γ, 15)    D(z)U(z)S3(z)S4(z)Pi(z)
-              elseif z in component(Γ, 16)    Pi(z-im*eps())
-              elseif z in component(Γ, 17)    D(z)Pi(z+im*eps())
-              elseif z in component(Γ, 18)    D(z)U(z)Pi(z)
+              elseif z in component(Γ, 14)    Li(z)S4i(z)Pi(z)
+              elseif z in component(Γ, 15)    Li(z)S4i(z)S3i(z)Pi(z)
+              elseif z in component(Γ, 16)    D(z)Pi(z+im*eps())
+              elseif z in component(Γ, 17)    Pi(z-im*eps())
+              elseif z in component(Γ, 18)    Li(z)Pi(z)
             
               end, Γ);
 
-    Φ = transpose(rhsolve(transpose(G), n));
+    Φ = transpose(rhsolve(transpose(G), n))*sqrt(-x);
     z = Fun(ℂ)
     2(z*Φ[1,2])(Inf)
 end
