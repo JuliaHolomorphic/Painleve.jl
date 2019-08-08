@@ -98,9 +98,9 @@ function pl2def_no_s2_neg_x1((s1,s2,s3),x; n=500, l=0.7)
               elseif z in component(Γ, 5)    S6(z)
               end, Γ);
 
-    Φ = transpose(rhsolve(transpose(G), n))*sqrt(-x);
+    Φ = transpose(rhsolve(transpose(G), n));
     z = Fun(ℂ)
-    2(z*Φ[1,2])(Inf)
+    2(z*Φ[1,2])(Inf)*sqrt(-x)
 end
 
 function pl2def_no_s2_neg_x2((s1,s2,s3),x; n=450, l=0.7)
@@ -223,9 +223,9 @@ function pl2def_no_s2_neg_x3((s1,s2,s3),x; n=450, l=0.6, R=0.1)
             
               end, Γ);
 
-    Φ = transpose(rhsolve(transpose(G), n))*sqrt(-x);
+    Φ = transpose(rhsolve(transpose(G), n))
     z = Fun(ℂ)
-    2(z*Φ[1,2])(Inf)
+    2(z*Φ[1,2])(Inf)*sqrt(-x)
 end
 
 end # module
