@@ -150,8 +150,8 @@ function pl2def_no_s2_neg_x2((s1,s2,s3),x; n=450, l=0.7)
     2(z*Φ[1,2])(Inf)
 end
 
-function pl2def_no_s2_neg_x3((s1,s2,s3),x; n=450, l=0.6, R=0.1)
-    @assert mod(n,18) == 0
+function pl2def_no_s2_neg_x3((s1,s2,s3),x; n=1600, l=0.6, R=0.1)
+    @assert mod(n,16) == 0
     @assert abs(s1 - s2 + s3 + s1*s2*s3) ≤ 100eps()
     @assert s2 == 0
     @assert s1*s3 != 1
@@ -169,19 +169,17 @@ function pl2def_no_s2_neg_x3((s1,s2,s3),x; n=450, l=0.6, R=0.1)
     
     C11 = Segment(0.5 + R*exp(im*π/4), 0.5 + R*exp(-im*π/4))
     C12 = Segment(0.5 + R*exp(-im*π/4), 0.5 + R*exp(-im*3π/4))
-    C13 = Segment(0.5 + R*exp(-im*3π/4), 0.5 + R*exp(-im*π))
-    C14 = Segment(0.5 + R*exp(im*π), 0.5 + R*exp(im*3π/4))
-    C15 = Segment(0.5 + R*exp(3im*π/4), 0.5 + R*exp(im*π/4))
+    C13 = Segment(0.5 + R*exp(-im*3π/4),0.5 + R*exp(im*3π/4))
+    C14 = Segment(0.5 + R*exp(3im*π/4), 0.5 + R*exp(im*π/4))
     
     C21 = Segment(-0.5 + R*exp(im*-3π/4), -0.5 + R*exp(im*-5π/4))
     C22 = Segment(-0.5 + R*exp(im*3π/4), -0.5 + R*exp(im*π/4))
-    C23 = Segment(-0.5 + R*exp(im*π/4), -0.5 + R*exp(im*0))
-    C24 = Segment(-0.5 + R*exp(im*0), -0.5 + R*exp(-im*π/4))
-    C25 = Segment(-0.5 + R*exp(-im*π/4), -0.5 + R*exp(-im*3π/4))
+    C23 = Segment(-0.5 + R*exp(im*π/4), -0.5 + R*exp(-im*π/4))
+    C24 = Segment(-0.5 + R*exp(-im*π/4), -0.5 + R*exp(-im*3π/4))
 
     Γ = Γ1 ∪ ΓUi ∪ ΓU ∪ Γ3 ∪ Γ4 ∪ ΓL ∪ ΓLi ∪ Γ6 ∪ 
-        C11 ∪ C12 ∪ C13 ∪ C14 ∪ C15 ∪ C21 ∪ C22 ∪ C23 ∪ C24 ∪ C25
-    
+        C11 ∪ C12 ∪ C13 ∪ C15 ∪ C21 ∪ C22 ∪ C23 ∪ C25
+
     Θ(z) = (2*z/3)*(sqrt(-x)^3)*(4*z^2-3)
     f(z) = ((1+2z)/(2z-1))^(im/(2*π))
     
@@ -211,16 +209,15 @@ function pl2def_no_s2_neg_x3((s1,s2,s3),x; n=450, l=0.6, R=0.1)
             
               elseif z in component(Γ, 9)     Li(z)S6(z)Pi(z)
               elseif z in component(Γ, 10)    Li(z)Pi(z)
-              elseif z in component(Γ, 11)    Pi(z-im*eps())
-              elseif z in component(Γ, 12)    D(z)Pi(z+im*eps())
-              elseif z in component(Γ, 13)    Li(z)S6(z)S1(z)Pi(z)
+              elseif z in component(Γ, 11) && imag(z) ≤ 0    Pi(z)
+              elseif z in component(Γ, 11) && imag(z) > 0    D(z)Pi(z)
+              elseif z in component(Γ, 12)    Li(z)S6(z)S1(z)Pi(z)
             
-              elseif z in component(Γ, 14)    Li(z)S4i(z)Pi(z)
-              elseif z in component(Γ, 15)    Li(z)S4i(z)S3i(z)Pi(z)
-              elseif z in component(Γ, 16)    D(z)Pi(z+im*eps())
-              elseif z in component(Γ, 17)    Pi(z-im*eps())
-              elseif z in component(Γ, 18)    Li(z)Pi(z)
-            
+              elseif z in component(Γ, 13)    Li(z)S4i(z)Pi(z)
+              elseif z in component(Γ, 14)    Li(z)S4i(z)S3i(z)Pi(z)
+              elseif z in component(Γ, 15) && imag(z) > 0    D(z)Pi(z)
+              elseif z in component(Γ, 15) && imag(z) ≤ 0    Pi(z)
+              elseif z in component(Γ, 16)    Li(z)Pi(z)
               end, Γ);
 
     Φ = transpose(rhsolve(transpose(G), n))
