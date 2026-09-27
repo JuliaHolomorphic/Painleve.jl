@@ -1,10 +1,26 @@
 name = "Painleve"
 uuid = "b3bc80ac-ac61-11e9-1329-33c34bac5595"
 authors = ["Sheehan Olver <solver@mac.com>"]
-version = "0.1.0"
+version = "0.2.0"
 
 [deps]
-ApproxFun = "28f2ccd6-bb30-5033-b560-165f7b14dc2f"
+BlockArrays = "8e7c35d0-a365-5155-bbbb-fb81a777f24e"
+ContinuumArrays = "7ae1f121-cc2c-504b-ac30-9b923412ae5c"
 LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
-SingularIntegralEquations = "e094c991-5a90-5477-8896-c1e4c9552a1a"
 RiemannHilbert = "79305c5b-9889-52e9-bdbd-56f883c71fe0"
+
+[sources]
+RiemannHilbert = {url = "https://github.com/JuliaHolomorphic/RiemannHilbert.jl", rev = "OPexamples"}
+
+[compat]
+BlockArrays = "1.10"
+ContinuumArrays = "0.21"
+LinearAlgebra = "1"
+RiemannHilbert = "0.2"
+julia = "1.10"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]
